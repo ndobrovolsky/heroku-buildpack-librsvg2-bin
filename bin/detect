@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo 'librsv2-bin'
+exit 0

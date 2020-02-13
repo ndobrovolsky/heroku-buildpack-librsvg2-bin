@@ -1,0 +1,62 @@
+#!/bin/sh
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+hecho() {
+  echo "-----> $@"
+}
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+INSTALL_DIR="$BUILD_DIR/zippi-rsvg"
+
+# LINUX_VERSION=$(uname -i)
+LINUX_VERSION=i386
+
+if [ $LINUX_VERSION = x86_64 ];
+then
+  PKG_LINUX_VERSION=amd64
+elif [ $LINUX_VERSION = i386 ];
+then
+  PKG_LINUX_VERSION=i386
+else
+  hecho "Linux version not supported"
+  exit 1
+fi
+
+# UBUNTU_VERSION=$(lsb_release -r -s)
+UBUNTU_VERSION=16.04
+
+if [ $UBUNTU_VERSION = 18.04 ];
+then
+  LIB_VERSION=2.40.20-2
+elif [ $UBUNTU_VERSION = 16.04 ];
+then
+  LIB_VERSION=2.40.13-3
+else
+  hecho "Ubuntu version not supported"
+  exit 1
+fi
+
+FILENAME="librsvg2-bin_${LIB_VERSION}_${PKG_LINUX_VERSION}.deb"
+CACHE_FILE="$CACHE_DIR/$FILENAME" 
+
+if [ ! -f $CACHE_FILE ]; then
+  PKG_URL="http://archive.ubuntu.com/ubuntu/pool/universe/libr/librsvg/${FILENAME}"
+
+  hecho "Downloading librsvg2-bin"
+  wget $PKG_URL -P $CACHE_DIR | indent
+fi
+
+hecho "Installing librsvg2-bin"
+apt install $CACHE_FILE
+
+hecho "Successfully installed librsvg2-bin"
+exit 0
+
+
+
