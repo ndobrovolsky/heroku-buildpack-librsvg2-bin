@@ -14,8 +14,7 @@ ENV_DIR=$3
 
 INSTALL_DIR="$BUILD_DIR/zippi-rsvg"
 
-# LINUX_VERSION=$(uname -i)
-LINUX_VERSION=i386
+LINUX_VERSION=$(uname -i)
 
 if [ $LINUX_VERSION = x86_64 ];
 then
@@ -28,8 +27,7 @@ else
   exit 1
 fi
 
-# UBUNTU_VERSION=$(lsb_release -r -s)
-UBUNTU_VERSION=16.04
+UBUNTU_VERSION=$(lsb_release -r -s)
 
 if [ $UBUNTU_VERSION = 18.04 ];
 then
