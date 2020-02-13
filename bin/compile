@@ -31,29 +31,41 @@ UBUNTU_VERSION=$(lsb_release -r -s)
 
 if [ $UBUNTU_VERSION = 18.04 ];
 then
-  LIB_VERSION=2.40.20-2
+  GTK_VERSION=3.22.30-1ubuntu1
+  RSVG_VERSION=2.40.20-2
 elif [ $UBUNTU_VERSION = 16.04 ];
 then
-  LIB_VERSION=2.40.13-3
+  GTK_VERSION=3.18.9-1ubuntu3
+  RSVG_VERSION=2.40.13-3
 else
   hecho "Ubuntu version not supported"
   exit 1
 fi
 
-FILENAME="librsvg2-bin_${LIB_VERSION}_${PKG_LINUX_VERSION}.deb"
-CACHE_FILE="$CACHE_DIR/$FILENAME" 
+GTK_FILENAME="libgtk-3-0_${GTK_VERSION}_${PKG_LINUX_VERSION}.deb"
+GTK_CACHE_FILE="$CACHE_DIR/$RSVG_FILENAME" 
+RSVG_FILENAME="librsvg2-bin_${RSVG_VERSION}_${PKG_LINUX_VERSION}.deb"
+RSVG_CACHE_FILE="$CACHE_DIR/$RSVG_FILENAME" 
 
-if [ ! -f $CACHE_FILE ]; then
-  PKG_URL="http://archive.ubuntu.com/ubuntu/pool/universe/libr/librsvg/${FILENAME}"
+if [ ! -f $RSVG_CACHE_FILE ] || [ ! -f $GTK_CACHE_FILE ] ; then 
+  GTK_URL="http://archive.ubuntu.com/ubuntu/pool/main/g/gtk+3.0/$GTK_FILENAME"
+  RSVG_URL="http://archive.ubuntu.com/ubuntu/pool/universe/libr/librsvg/${RSVG_FILENAME}"
+
+  hecho "Downloading gtk+3.0"
+  wget $GTK_URL -P $CACHE_DIR | indent
 
   hecho "Downloading librsvg2-bin"
-  wget $PKG_URL -P $CACHE_DIR | indent
+  wget $RSVG_URL -P $CACHE_DIR | indent
 fi
 
-hecho "Installing librsvg2-bin"
-apt install $CACHE_FILE
+hecho "Installing gtk+3.0"
+dpkg -i $GTK_CACHE_FILE
+hecho "Successfully installed gtk+3.0"
 
+hecho "Installing librsvg2-bin"
+dpkg -i $RSVG_CACHE_FILE
 hecho "Successfully installed librsvg2-bin"
+
 exit 0
 
 
