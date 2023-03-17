@@ -37,10 +37,6 @@ if [ ! -f $RSVG_CACHE_FILE ] || [ ! -f $GTK_CACHE_FILE ] ; then
   wget $RSVG_URL -P $CACHE_DIR | indent
 fi
 
-hecho "Installing gtk+3.0"
-dpkg -i $GTK_CACHE_FILE
-hecho "Successfully installed gtk+3.0"
-
 hecho "Installing librsvg2-bin"
 dpkg -i $RSVG_CACHE_FILE
 hecho "Successfully installed librsvg2-bin"
